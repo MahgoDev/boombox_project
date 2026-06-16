@@ -9,6 +9,7 @@ from django.http import HttpResponse
 
 def create_account(request):
     body = request.body
+    
     dct = json.loads(body)
     
     """ TODO dct is a dictionary with keys:
@@ -25,7 +26,20 @@ def create_account(request):
         formatting it into a user-friendly message 
     """
 
-    return HttpResponse ('')
+    birthdate = dct['birthdate']
+    birthdate = birthdate.split('/')
+
+    day = int(birthdate[0])
+    month = int(birthdate[1])
+    year = birthdate[2]
+
+    first_half_year = int(year[0:2])
+    second_half_year = int(year[2:4])
+
+    cabala_number = (day + month + first_half_year + second_half_year) % 16
+
+    
+    return HttpResponse ('Your cabala number is: ' + str(cabala_number))
 
 def save_ratings(request):
     return HttpResponse ('Ratings Saved')
