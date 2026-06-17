@@ -93,4 +93,35 @@ def add_albums(request):
             - The sum of all years (kind of useless but whatever)
     """
 
+    dct['my_favorite_album']='Red'
+    dct['my_fave_album_release_date']='2012-10-22'
+
+    print(dct['my_favorite_album'], dct['my_fave_album_release_date'])
+
+   
+    content = dct['content']
+    names = [list(item.keys())[0] for item in content]
+    dates = [list(item.values())[0] for item in content]
+
+    print(names[0].lower())
+    print(names[1].upper())
+
+    names[0] = 'YOU WERE HACKED!!!!!!!!!'
+    names.append('brat_by_charlie_xcx')
+    dates.append('2024-06-07')
+    print(len(names))
+
+    indice_names = len(names) //2
+    indice_dates = len(dates) //2
+
+    names.insert(indice_names,'bitch')
+    dates.insert(indice_dates,'1995-10-04')
+
+    print(names)
+    print(dates)
+
+
+
+
+
     return HttpResponse ('')
