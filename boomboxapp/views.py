@@ -58,26 +58,32 @@ def add_albums(request):
         ]
     }
 
-    1) Using list comprehension, convert the list of
+    1) Update the dictionary with a new entry, with a
+        album name and release date that you (the server owner)
+        really enjoy
+    2) Print the date of the album you just added to the
+        dictionary using the dictionary and the album name key,
+        then remove it from the dictionary using the key again
+    3) Using list comprehension, convert the list of
         dictionaries into two separate lists: one
         only with names and one only with release dates.
         Hint: the method .items() on a dictionary converts
         it into a list of tuples
-    2) Print the first album name converted to lowercase,
+    4) Print the first album name converted to lowercase,
         and the second one converted to uppercase
-    3) Replace the first album name with 'YOU WERE HACKED'
-    4) Append a random name on the name list and a random date
+    5) Replace the first album name with 'YOU WERE HACKED'
+    6) Append a random name on the name list and a random date
         on the date list. Print the new list length.
-    5) Insert a random name on the name list and a random date
+    7) Insert a random name on the name list and a random date
         on the date list, the insert position must be the integer
         part of half of the lists' lengths. Print the new list length.
-    6) Remove the items you've just appended and inserted;
+    8) Remove the items you've just appended and inserted;
         the replaced item unfortunately is corrupted data.
         Print the new list length.
-    7) Copy the dates to a new list, then sort and print it;
+    9) Copy the dates to a new list, then sort and print it;
         are the dates in proper chronological order?
         Would this happen in any date format?
-    8) Format the response with fun facts about the consumed data:
+    10) Format the response with fun facts about the consumed data:
     Get the years of the date list into a new list by using
         list comprehension together with splitting the date string
         by its separator (-) and getting the last item of the
