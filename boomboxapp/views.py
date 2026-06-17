@@ -41,5 +41,50 @@ def create_account(request):
     
     return HttpResponse ('Your cabala number is: ' + str(cabala_number))
 
-def save_ratings(request):
-    return HttpResponse ('Ratings Saved')
+def add_albums(request):
+    body = request.body
+    
+    dct = json.loads(body)
+
+    """ TODO dct is a dictionary with key content,
+    which is a list of dictionaries, all of which have
+    one key representing the album name, and
+    one value representing the album's release date (format YYYY-MM-DD)
+    Example:
+    {
+         "content": [
+            {"Lover": "2019-08-23"},
+            {"Reputation": "2017-11-10"}
+        ]
+    }
+
+    1) Using list comprehension, convert the list of
+        dictionaries into two separate lists: one
+        only with names and one only with release dates.
+        Hint: the method .items() on a dictionary converts
+        it into a list of tuples
+    2) Print the first album name converted to lowercase,
+        and the second one converted to uppercase
+    3) Replace the first album name with 'YOU WERE HACKED'
+    4) Append a random name on the name list and a random date
+        on the date list. Print the new list length.
+    5) Insert a random name on the name list and a random date
+        on the date list, the insert position must be the integer
+        part of half of the lists' lengths. Print the new list length.
+    6) Remove the items you've just appended and inserted;
+        the replaced item unfortunately is corrupted data.
+        Print the new list length.
+    7) Copy the dates to a new list, then sort and print it;
+        are the dates in proper chronological order?
+        Would this happen in any date format?
+    8) Format the response with fun facts about the consumed data:
+    Get the years of the date list into a new list by using
+        list comprehension together with splitting the date string
+        by its separator (-) and getting the last item of the
+        resulting list, then also inform:
+            - The oldest year
+            - The newest year
+            - The sum of all years (kind of useless but whatever)
+    """
+
+    return HttpResponse ('')
