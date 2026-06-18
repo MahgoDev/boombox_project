@@ -125,3 +125,60 @@ def add_albums(request):
 
 
     return HttpResponse ('')
+
+def _get_rating(id_rating_item):
+    return id_rating_dict[1]
+
+def add_ratings(request):
+    body = request.body
+    
+    dct = json.loads(body)
+
+    """ TODO dct is a dictionary with keys username and content
+    content is a list of dictionaries with only one key-value pair,
+    where the key is the album name and the value is its rating
+    Example:
+    {
+        "username": "bbbertucci"
+        "content": [
+            {"Lover": 9.5},
+            {"Reputation": 8.4}
+        ]
+    }
+
+    1) Split the "content" dictionary into two lists,
+        one only with names and the other with ratings
+        Do this using a for loop iterating on a range from 0
+        to the list's size
+    2) Create a dictionary, initially with this format:
+        {
+            "Bad": 0,
+            "Good": 0,
+            "Excellent": 0
+        }
+        Iterate over the rating list putting it in a for loop.
+        Inside it, use if-elif-else to assign a rating range in which:
+            [8 - 10]: Excellent
+            [6 - 8): Average
+            [0, 6): Bad
+        Update the dictionary, incrementing the value of the rating range
+        found
+    3) Create an empty list called top_ratings and
+        a counter i, initially zero
+    4) Using the sort method with key as the function _get_rating,
+        sort the original "content" list by rating in descending order
+    5) Start a while loop with condition where the length of top_ratings is
+        smaller than half of the ratings list and the rating for the current
+        value of the counter is larger than 5
+    6) Add the rating for the current value of the counter to the top_ratings list
+    7) To finish this loop, increment i, check if it is smaller than the rating
+        list's length to avoid errors
+        on the next iteration (it it's not, break the loop)
+    9) Format the response with the following information:
+        - Number of ratings in each rating range
+        - Average rating
+        - Top ratings
+        - Smallest rating in the top ratings
+    """
+
+    return HttpResponse('')
