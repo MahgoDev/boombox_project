@@ -127,7 +127,7 @@ def add_albums(request):
     return HttpResponse ('')
 
 def _get_rating(id_rating_item):
-    return id_rating_dict[1]
+    return list(id_rating_item.values())[0]
 
 def add_ratings(request):
     body = request.body
@@ -139,7 +139,7 @@ def add_ratings(request):
     where the key is the album name and the value is its rating
     Example:
     {
-        "username": "bbbertucci"
+        "username": "bbbertucci",
         "content": [
             {"Lover": 9.5},
             {"Reputation": 8.4}
@@ -150,6 +150,7 @@ def add_ratings(request):
         one only with names and the other with ratings
         Do this using a for loop iterating on a range from 0
         to the list's size
+
     2) Create a dictionary, initially with this format:
         {
             "Bad": 0,
@@ -175,10 +176,57 @@ def add_ratings(request):
         list's length to avoid errors
         on the next iteration (it it's not, break the loop)
     9) Format the response with the following information:
-        - Number of ratings in each rating range
-        - Average rating
+        - Number of ratings in each rating range    
         - Top ratings
-        - Smallest rating in the top ratings
-    """
+        - Smallest album in the top ratings
 
-    return HttpResponse('')
+    """
+    content = dct['content']
+    album_name=[]
+    album_rating=[]
+
+    for i in range(0,len(content)):
+        item = content[i]
+        album_name.append(list(item.keys())[0])
+        album_rating.append(list(item.values())[0])
+
+    stars ={
+            "Flop": 0,
+            "Good": 0,
+            "Excellent": 0
+        }
+
+    for av in album_rating:
+       
+        if av >=8:
+            star = 'Excellent'
+        elif av >=6:
+            star = 'Good'
+        else:
+            star = 'Flop'
+        
+        stars[star] = stars[star] + 1
+    
+    top_ratings = []
+    counter_i = 0
+
+    content.sort(reverse=True, key=_get_rating)
+    album_rating_sorted=[]
+
+    for i in range(0,len(content)):
+        item = content[i]
+        album_rating_sorted.append(list(item.values())[0])
+    
+    mid_list = len(album_rating_sorted)//2
+    
+    while counter_i <= mid_list and album_rating_sorted[counter_i] >= 5:
+        top_ratings.append(album_rating_sorted[counter_i])
+        counter_i += 1
+        if counter_i >= len(album_rating_sorted):
+            break
+    
+    flopest_album = content[counter_i - 1]
+
+    response = f"The album scores is {stars}!!!, \n The grestest albums is {top_ratings} \n and the flopest album is {flopest_album}!!!"
+
+    return HttpResponse(response)
