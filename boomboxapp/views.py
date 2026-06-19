@@ -7,7 +7,60 @@ from datetime import datetime
 
 from django.http import HttpResponse
 
+def _get_rating(id_rating_item):
+    return list(id_rating_item.values())[0]
+
+""" TODO
+To finalize the project, we must save the data passed to the endpoints
+    in the database. This is done using the lines below for each entity.
+
+# Account
+account = models.Account(username=, docnumber=, password=, creation_date=datetime.now())
+account.save()
+id = account.id
+
+# Album
+album = models.Album(album_name=, release_date=, creation_date=datetime.now())
+album.save()
+id = album.id
+
+# Rating
+album = models.Album.objects.get(name=)
+account = modela.Account.objects.get(username=)
+rating = models.Rating(album=album, account=account, rating=, creation_date=)
+rating.save()
+id = rating.id
+
+Define functions that receive arguments for each entity's fields and fill their
+    usage in the snippets above, returning the saved object's id.
+    Call these functions in the endpoints passing the request data, printing
+    the id's returned by the function call.
+
+For the Account endpoint, try sending two requests with the same document number.
+    What happened? Why?
+    The response is a raw exception and is very unfriendly for the user to
+    understand. So, use try-except to catch the thrown Exception and handle it by
+    returning an error code 500 and with a message formatted to explain the error
+    to the user.
+
+For the Rating endpoint, try sending two requests with the same account and album.
+    Then, try sending an account that has not been added, and then repeat for an album.
+    What happened in each case? Why?
+    Again, use try-except to catch each Exception type separately and handle them by
+    returning the error code 500 and with messages formatted to explain the errors
+    to the user.
+"""
+
 def create_account(request):
+    """
+    Request body example:
+    {
+        "username": "bbbertucci",
+        "docnumer": "12345678910",
+        "password": "password123"
+    }
+    """
+
     body = request.body
     
     dct = json.loads(body)
@@ -42,6 +95,16 @@ def create_account(request):
     return HttpResponse ('Your cabala number is: ' + str(cabala_number))
 
 def add_albums(request):
+    """
+    Example:
+    {
+         "content": [
+            {"Lover": "2019-08-23"},
+            {"Reputation": "2017-11-10"}
+        ]
+    }
+    """
+
     body = request.body
     
     dct = json.loads(body)
@@ -50,13 +113,6 @@ def add_albums(request):
     which is a list of dictionaries, all of which have
     one key representing the album name, and
     one value representing the album's release date (format YYYY-MM-DD)
-    Example:
-    {
-         "content": [
-            {"Lover": "2019-08-23"},
-            {"Reputation": "2017-11-10"}
-        ]
-    }
 
     1) Update the dictionary with a new entry, with a
         album name and release date that you (the server owner)
@@ -126,17 +182,8 @@ def add_albums(request):
 
     return HttpResponse ('')
 
-def _get_rating(id_rating_item):
-    return list(id_rating_item.values())[0]
-
 def add_ratings(request):
-    body = request.body
-    
-    dct = json.loads(body)
-
-    """ TODO dct is a dictionary with keys username and content
-    content is a list of dictionaries with only one key-value pair,
-    where the key is the album name and the value is its rating
+    """
     Example:
     {
         "username": "bbbertucci",
@@ -145,6 +192,15 @@ def add_ratings(request):
             {"Reputation": 8.4}
         ]
     }
+    """
+
+    body = request.body
+    
+    dct = json.loads(body)
+
+    """ TODO dct is a dictionary with keys username and content
+    content is a list of dictionaries with only one key-value pair,
+    where the key is the album name and the value is its rating
 
     1) Split the "content" dictionary into two lists,
         one only with names and the other with ratings
