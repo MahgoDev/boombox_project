@@ -2,6 +2,7 @@ from django.shortcuts import render
 import json
 from . import models
 from datetime import datetime
+from django.db.utils import IntegrityError
 
 # Create your views here.
 
@@ -26,7 +27,7 @@ id = album.id
 
 # Rating
 album = models.Album.objects.get(name=)
-account = modela.Account.objects.get(username=)
+account = models.Account.objects.get(username=)
 rating = models.Rating(album=album, account=account, rating=, creation_date=)
 rating.save()
 id = rating.id
@@ -51,7 +52,34 @@ For the Rating endpoint, try sending two requests with the same account and albu
     to the user.
 """
 
+def _create_account(user, doc, passw):
+    account = models.Account(username=user, docnumber=doc, password=passw, creation_date=datetime.now())
+    account.save()
+
+    id = account.id
+    return id
+
+def _album_id(name, release):
+    album = models.Album(album_name=name, release_date=release, creation_date=datetime.now())
+    album.save()
+
+    id=album.id
+    return id
+
+def _album_ratings(disco, user, rate):
+    album = models.Album.objects.get(name=disco)
+    account = models.Account.objects.get(username=user)
+
+    rating = models.Rating(album=album, account=account, rating=rate, creation_date=datetime.now())
+    rating.save()
+
+    id = rating.id
+    return id
+
+
+
 def create_account(request):
+
     """
     Request body example:
     {
@@ -91,7 +119,16 @@ def create_account(request):
 
     cabala_number = (day + month + first_half_year + second_half_year) % 16
 
-    
+    try:
+        id = _create_account(dct['username'], dct['docnumber'], dct['password'])
+    except IntegrityError as duplicated_doc:
+        return HttpResponse (f'The Doc Number has been used, try another', status = 500 )
+
+
+    print(f'Your ID User is: {id}')
+
+
+
     return HttpResponse ('Your cabala number is: ' + str(cabala_number))
 
 def add_albums(request):
